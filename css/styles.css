@@ -156,6 +156,7 @@ table {
 ul {
   padding-top: 100px;
   list-style: none;
+  margin-left: 100px;
 }
 
 li {
@@ -163,10 +164,13 @@ li {
   margin: 10px;
   border: solid black 2px;
   border-radius: 2%;
+  margin-top: 20px;
+  padding-bottom: 5px;
 }
 
 p {
   margin-left: 20px;
+  font-family: "Brush Script MT", cursive;
 }
 
 img {

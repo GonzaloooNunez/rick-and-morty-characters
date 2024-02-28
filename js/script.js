@@ -1,7 +1,14 @@
-const characterList = document.getElementById(`character-list`);
+const characterList = document.getElementById("character-list");
+const previousPage = document.getElementById("prev-page");
+const nextPage = document.getElementById("next-page");
 
-function sacarPersonajes() {
-  fetch(`https://rickandmortyapi.com/api/character/?page=1`)
+let nextPageUrl = "";
+let prevPageUrl = "";
+
+function sacarPersonajes(url) {
+  characterList.innerHTML = "";
+
+  fetch(url)
     .then((response) => {
       if (!response.ok) {
         throw new Error(`La solicitud no fue exitosa`);
@@ -9,21 +16,20 @@ function sacarPersonajes() {
       return response.json();
     })
     .then((data) => {
+      nextPageUrl = data.info.next;
+      prevPageUrl = data.info.prev;
+
       data.results.forEach((character) => {
         let listaPersonajes = document.createElement("li");
         let imagen = document.createElement("img");
         imagen.src = character.image;
-
         let nombre = document.createElement("p");
         nombre.innerHTML = `<strong>Nombre:</strong> ${character.name}`;
-
         let especie = document.createElement("p");
         especie.innerHTML = `<strong>Especie:</strong> ${character.species}`;
-
         listaPersonajes.appendChild(imagen);
         listaPersonajes.appendChild(nombre);
         listaPersonajes.appendChild(especie);
-
         characterList.appendChild(listaPersonajes);
       });
     })
@@ -32,9 +38,14 @@ function sacarPersonajes() {
     });
 }
 
-sacarPersonajes();
+nextPage.addEventListener("click", function () {
+  sacarPersonajes(nextPageUrl);
+});
 
-const previousPage = document.getElementById("prev-page");
-const nextPage = document.getElementById("next-page");
+previousPage.addEventListener("click", function () {
+  if (prevPageUrl) {
+    sacarPersonajes(prevPageUrl);
+  }
+});
 
-nextPage.addEventListener("click", function () {});
+sacarPersonajes("https://rickandmortyapi.com/api/character/?page=1");
